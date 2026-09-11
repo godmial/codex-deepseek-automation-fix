@@ -113,6 +113,35 @@ base_url = "http://127.0.0.1:18317/v1"
 不用重启 Codex，也**不用动 key、模型列表、账号或网关配置**。`install` 会在装完后自己打 `/healthz`
 确认服务真的起来了，起不来会明确报错。
 
+## 作为 Codex 插件使用（可选）
+
+不想读文档、想让 agent 自己诊断的话，这个仓库同时是一个 Codex 插件市场：
+
+```bash
+codex plugin marketplace add godmial/codex-deepseek-automation-fix
+codex plugin add codex-deepseek-automation-fix@godmial
+```
+
+装好后新开一个会话，直接说「我的 Codex 定时任务在 DeepSeek 上报 400，帮我看看」，agent 会自己走完诊断。
+插件带一个技能（诊断与安装流程）和三个**只读** MCP 工具：
+
+| 工具 | 作用 |
+|---|---|
+| `codexfix_doctor` | 扫本地会话日志，判定失败是否由「注入项缺 `call_id`」引起 |
+| `codexfix_status` | 读 `/healthz`，报告中间件是否在运行、改写计数 |
+| `codexfix_probe` | 向上游发最小畸形请求，判断它严不严格（token 自动从 `config.toml` 读取） |
+
+三个工具都是只读的，安装、改 `base_url`、启停服务仍然由上面的 CLI 命令完成。这是刻意的：**无人值守的
+定时任务会自动调用 MCP 工具，所以插件工具不能有副作用**（实测桌面端的自动化运行会直接执行工具调用，
+不经过人工确认）。
+
+插件里的 `mcp/codexfix.py` 是主程序的 vendor 副本，由 `scripts/sync_plugin.py` 同步，CI 会检查它是否漂移：
+
+```bash
+python3 scripts/sync_plugin.py          # 同步
+python3 scripts/sync_plugin.py --check  # CI 里的检查
+```
+
 ## 它到底改了什么
 
 | 情形 | 默认行为 | 原因 |

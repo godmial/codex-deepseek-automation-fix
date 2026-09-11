@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "codexfix": {
+      "command": "python3",
+      "args": ["./mcp/codexfix_mcp.py"],
+      "cwd": ".",
+      "env_vars": ["CODEX_HOME", "CODEXFIX_TOKEN"]
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "codex-deepseek-automation-fix",
+  "version": "0.1.0",
+  "description": "Diagnose and fix Codex automations that fail on DeepSeek's strict Responses API (missing field `call_id`).",
+  "author": {
+    "name": "godmial",
+    "url": "https://github.com/godmial"
+  },
+  "homepage": "https://github.com/godmial/codex-deepseek-automation-fix",
+  "repository": "https://github.com/godmial/codex-deepseek-automation-fix",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "deepseek",
+    "responses-api",
+    "call_id",
+    "automation",
+    "heartbeat",
+    "middleware"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Codex DeepSeek Automation Fix",
+    "shortDescription": "让 Codex 定时任务在 DeepSeek 上跑起来",
+    "longDescription": "Codex 把定时任务、heartbeat、跨线程消息写成一条没有 call_id 的 injected tool-output；DeepSeek 严格的 /responses 会在模型运行前直接 400。这个插件用只读工具帮你判断失败原因（扫描会话日志）、确认上游是否严格、检查本地中间件状态，并附带一套安装与验证流程。",
+    "developerName": "godmial",
+    "category": "Productivity",
+    "capabilities": [
+      "Read"
+    ],
+    "websiteURL": "https://github.com/godmial/codex-deepseek-automation-fix",
+    "defaultPrompt": [
+      "我的 Codex 定时任务在 DeepSeek 上报 400，帮我确认是不是 call_id 的问题",
+      "检查我的 Codex 自动化失败原因，并告诉我该不该装 codexfix 中间件",
+      "我的 codexfix 中间件还在跑吗？顺便看看有没有新的失败会话"
+    ]
+  }
+}

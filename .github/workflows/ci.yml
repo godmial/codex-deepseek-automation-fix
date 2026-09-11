@@ -25,5 +25,9 @@ jobs:
       - name: Sensitive-value scan
         run: python scripts/scan_sensitive.py .
 
+      # The plugin ships a vendored copy of codexfix.py; fail if it drifted.
+      - name: Plugin vendored copy is in sync
+        run: python scripts/sync_plugin.py --check
+
       - name: Unit tests
         run: python -m unittest discover -s tests -v
